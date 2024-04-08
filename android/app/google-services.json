@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "72216676616",
+    "firebase_url": "https://chatapp-f4ca3-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "chatapp-f4ca3",
+    "storage_bucket": "chatapp-f4ca3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72216676616:android:16d812a7d77bc59c8984bd",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72216676616-83k43rslmk9o46q4kjt52q38gau2fr2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTPE9gnOrzC6_OERMv9xQMSJMNw6l3p_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72216676616-83k43rslmk9o46q4kjt52q38gau2fr2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72216676616:android:7ec59af97e9076f68984bd",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebase_firestore_tutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72216676616-83k43rslmk9o46q4kjt52q38gau2fr2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTPE9gnOrzC6_OERMv9xQMSJMNw6l3p_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72216676616-83k43rslmk9o46q4kjt52q38gau2fr2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
