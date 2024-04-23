@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_firestore_tutorial/firebase_options.dart';
+import 'package:flutter_firebase_firestore_tutorial/pages/LessonsPage.dart';
 
-import 'package:flutter_firebase_firestore_tutorial/pages/home_page.dart';
+import 'package:flutter_firebase_firestore_tutorial/pages/SubjectsPage1.dart';
+import 'package:flutter_firebase_firestore_tutorial/registration/phone.dart';
+import 'package:flutter_firebase_firestore_tutorial/registration/verify.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home:MyPhone(),
     );
   }
 }

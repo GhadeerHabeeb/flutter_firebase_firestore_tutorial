@@ -1,45 +1,59 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Todo {
-  String task;
+  String title;
+  String subject;
+  String Lecture;
+  String video;
   bool isDone;
-  Timestamp createdOn;
-  Timestamp updatedOn;
+  Timestamp onCreate;
+
 
   Todo({
-    required this.task,
+    required this.title,
+    required this.subject,
     required this.isDone,
-    required this.createdOn,
-    required this.updatedOn,
+    required this.video,
+    required this.Lecture,
+    required this.onCreate,
   });
 
   Todo.fromJson(Map<String, Object?> json)
       : this(
-          task: json['task']! as String,
+          title: json['title']! as String,
+          subject: json['subject']! as String,
           isDone: json['isDone']! as bool,
-          createdOn: json['createdOn']! as Timestamp,
-          updatedOn: json['updatedOn']! as Timestamp,
+          video: json['video']! as String,
+          Lecture: json['Lecture']! as String,
+          onCreate:json['onCreate']! as Timestamp,
         );
 
   Todo copyWith({
-    String? task,
+    String? title,
+    String? subject,
     bool? isDone,
-    Timestamp? createdOn,
-    Timestamp? updatedOn,
+    String? video,
+    String? Lecture,
+    Timestamp?onCreate,
   }) {
     return Todo(
-        task: task ?? this.task,
+        title: title ?? this.title,
+        subject: subject ?? this.subject,
         isDone: isDone ?? this.isDone,
-        createdOn: createdOn ?? this.createdOn,
-        updatedOn: updatedOn ?? this.updatedOn);
+        Lecture: Lecture ?? this.Lecture,
+        video: video ?? this.video,
+      onCreate: onCreate ?? this.onCreate,
+    );
   }
 
   Map<String, Object?> toJson() {
     return {
-      'task': task,
+      'title': title,
+      'subject': subject,
       'isDone': isDone,
-      'createdOn': createdOn,
-      'updatedOn': updatedOn,
+      'Lecture': Lecture,
+      'video': video,
+      'onCreate':onCreate,
     };
   }
 }

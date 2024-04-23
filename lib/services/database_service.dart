@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_firebase_firestore_tutorial/models/todo.dart';
 
-const String TODO_COLLECTON_REF = "todos";
+late  String TODO_COLLECTON_REF='Math';
 
 class DatabaseService {
   final _firestore = FirebaseFirestore.instance;
 
-  late final CollectionReference _todosRef;
+  late final todosRef;
 
   DatabaseService() {
-    _todosRef = _firestore.collection(TODO_COLLECTON_REF).withConverter<Todo>(
+
+    todosRef = _firestore.collection(SelectCollection(TODO_COLLECTON_REF)).orderBy('onCreate',descending: true).withConverter<Todo>(
         fromFirestore: (snapshots, _) => Todo.fromJson(
               snapshots.data()!,
             ),
@@ -17,18 +18,21 @@ class DatabaseService {
   }
 
   Stream<QuerySnapshot> getTodos() {
-    return _todosRef.snapshots();
+    return todosRef.snapshots();
   }
 
   void addTodo(Todo todo) async {
-    _todosRef.add(todo);
+    todosRef.add(todo);
   }
 
   void updateTodo(String todoId, Todo todo) {
-    _todosRef.doc(todoId).update(todo.toJson());
+    todosRef.doc(todoId).update(todo.toJson());
   }
 
   void deleteTodo(String todoId) {
-    _todosRef.doc(todoId).delete();
+    todosRef.doc(todoId).delete();
+  }
+  String SelectCollection(String x){
+    return TODO_COLLECTON_REF=x;
   }
 }
