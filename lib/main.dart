@@ -8,6 +8,8 @@ import 'package:flutter_firebase_firestore_tutorial/pages/SubjectsPage1.dart';
 import 'package:flutter_firebase_firestore_tutorial/registration/phone.dart';
 import 'package:flutter_firebase_firestore_tutorial/registration/verify.dart';
 
+import 'pages/CollectionInCollection.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home:MyPhone(),
+      home:MyPhone()/*CollectionIncollection()*/,
     );
   }
 }

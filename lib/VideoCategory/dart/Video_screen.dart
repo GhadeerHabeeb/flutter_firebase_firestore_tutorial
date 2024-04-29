@@ -63,7 +63,10 @@ class _VideoScreenState extends State<VideoScreen> {
                       ),
                     ),
                   ),
-                      Text('${widget.title}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      SizedBox(
+                          width: 220,
+                          height: 50,
+                          child: Center(child: Text('${widget.title}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
                   SizedBox(
                     height: 50,
                     width: 50,

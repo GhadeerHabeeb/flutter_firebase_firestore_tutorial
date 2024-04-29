@@ -1,56 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_firestore_tutorial/VideoCategory/dart/Video_screen.dart';
-import 'package:flutter_firebase_firestore_tutorial/lesson_category/LessonCategory.dart';
+import 'package:flutter_firebase_firestore_tutorial/models/todo.dart';
 import 'package:flutter_firebase_firestore_tutorial/pages/Lecture_content.dart';
-import 'package:flutter_firebase_firestore_tutorial/pages/SubjectsPage1.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_firebase_firestore_tutorial/services/database_service.dart';
 
-import '../models/todo.dart';
-import '../services/database_service.dart';
-
-class SubjectsPage1 extends StatefulWidget {
-  String?stage;
-    SubjectsPage1({required this.stage,super.key});
+class CollectionIncollection extends StatefulWidget {
+  CollectionIncollection({Key? key}) : super(key: key);
 
   @override
-  State<SubjectsPage1> createState() => _SubjectsPage1State();
+  State<CollectionIncollection> createState() => _CollectionIncollectionState();
 }
 
-class _SubjectsPage1State extends State<SubjectsPage1> {
-  final TextEditingController _textEditingController = TextEditingController();
-
+class _CollectionIncollectionState extends State<CollectionIncollection> {
   final DatabaseService _databaseService = DatabaseService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: _appBar(),
-      body: _buildUI(),
-
+      body:  _messagesListView(),
     );
+
   }
-
-  PreferredSizeWidget _appBar() {
-    return AppBar(
-      backgroundColor: Colors.amber,
-      title: Center(child: Text('${widget.stage}')),
-
-    );
-  }
-
-  Widget _buildUI() {
-    return SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _messagesListView(),
-            ],
-          ),
-        ));
-  }
-
   Widget _messagesListView() {
     return SizedBox(
       height: MediaQuery
@@ -63,13 +33,13 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
         stream: _databaseService.getTodos(),
         builder: (context, snapshot) {
           List todos = snapshot.data?.docs ?? [];
-          if (todos.isEmpty) {
+        /*  if (todos.isEmpty) {
             return Center(
               child: Center(
                 child: Image.asset('assets/images/Aniki Hamster.gif'),
               ),
             );
-          }
+          }*/
           return ListView.builder(
             itemCount: todos.length,
             itemBuilder: (context, index) {
@@ -77,7 +47,6 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
               print('todo --------$todo');
               String todoId = todos[index].id;
               print('todosId________$todoId');
-
               return Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,

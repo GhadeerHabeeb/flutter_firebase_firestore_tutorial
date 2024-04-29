@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_firestore_tutorial/lesson_category/LessonCategory.dart';
 import 'package:flutter_firebase_firestore_tutorial/pages/LessonsPage.dart';
+import 'package:flutter_firebase_firestore_tutorial/services/database_service.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DatabaseService _databaseService=DatabaseService();
+
   List<Stages>stageContent=[Stages.Stages1,Stages.Stages2,Stages.others];
   List<LessonCategories>Lessons=[LessonCategories.Lesson1,LessonCategories.Lesson2,LessonCategories.Lesson3,LessonCategories.others];
 
@@ -51,9 +54,18 @@ class _HomePageState extends State<HomePage> {
                         return InkWell(
                           onTap: (){
                             print(stageContent[index].name);
-        
+                              if(stageContent[index].name=='Stage1')
+                                {  _databaseService.SelectCollectionId('Stage1');
+                                  _databaseService.SelectStageCollection(stageContent[index].name);
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context)=>LessonScreen(Stage:stageContent[index].name,Lessons:Lessons),));
+                                }
+                              else if(stageContent[index].name=='Stage2'){
+                                _databaseService.SelectCollectionId('Stage2');
+                                _databaseService.SelectStageCollection(stageContent[index].name);
                                 Navigator.push(context,
-                                    MaterialPageRoute(builder: (context)=>LessonScreen(Stage:stageContent[index].name),));
+                                    MaterialPageRoute(builder: (context)=>LessonScreen(Stage:stageContent[index].name,Lessons:Lessons),));
+                              }
         
                           },
                           child: Card(

@@ -11,17 +11,21 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class LessonScreen extends StatelessWidget {
      String? Stage;
-    LessonScreen({ this.Stage,Key? key}) : super(key: key);
+     List Lessons=[];
+    LessonScreen({required this.Lessons, this.Stage,Key? key}) : super(key: key);
     DatabaseService _databaseService=DatabaseService();
-  List<LessonCategories>Lessons1=[LessonCategories.Lesson1,LessonCategories.Lesson2,LessonCategories.Lesson3,LessonCategories.others];
-     List<Lesson2Categories>Lessons2=[Lesson2Categories.Lesson1,Lesson2Categories.Lesson2,Lesson2Categories.Lesson3,Lesson2Categories.others];
+ /* List<LessonCategories>Lessons1=[LessonCategories.Lesson1,LessonCategories.Lesson2,LessonCategories.Lesson3,LessonCategories.others];
+     List<Lesson2Categories>Lessons2=[Lesson2Categories.Lesson1,Lesson2Categories.Lesson2,Lesson2Categories.Lesson3,Lesson2Categories.others];*/
      String? name;
      Color?color;
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor:Colors.amber,),
+        backgroundColor:Colors.amber,
+
+      title: Center(child: Text('${Stage}')),),
       body:  SingleChildScrollView(
         child: Column(
           children:[
@@ -36,7 +40,7 @@ class LessonScreen extends StatelessWidget {
                 padding: EdgeInsets.all(12.0),
                 child: Center(
                   child: GridView.builder(
-                    itemCount:Stage=='Stage1'? Lessons1.length:Lessons2.length,
+                    itemCount: Lessons.length ,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 4.0,
@@ -46,9 +50,13 @@ class LessonScreen extends StatelessWidget {
                        return  InkWell(
                          onTap: (){
 
-                           _databaseService.SelectCollection(Stage=='Stage1'?Lessons1[index].name:Lessons2[index].name);
+                           print(Lessons[index].name);
+                           print(Stage);
+                           print(_databaseService.SelectCollectionId(Stage!));
+
+                           _databaseService.SelectCollection(Lessons[index].name);
                            Navigator.push(context,
-                               MaterialPageRoute(builder: (context)=>SubjectsPage1(),));
+                               MaterialPageRoute(builder: (context)=>SubjectsPage1(stage:Stage),));
         
                          },
                          child: Card(
@@ -56,11 +64,11 @@ class LessonScreen extends StatelessWidget {
                              children: [
                                Container(
                                  decoration: BoxDecoration(
-                                   color:Stage=='Stage1'? Lessons1[index].color.withOpacity(0.4):Lessons2[index].color.withOpacity(0.4),
+                                   color: Lessons[index].color  ,
                                    borderRadius: BorderRadius.circular(20)
                                  ),
                                  child: ListTile(
-                                   title: Text(Stage=='Stage1'?Lessons1[index].name:Lessons2[index].name,style: TextStyle(fontSize: 20),),
+                                   title: Text( Lessons[index].name,style: TextStyle(fontSize: 20),),
                                  ),
                                ),
                                SizedBox(
@@ -76,7 +84,7 @@ class LessonScreen extends StatelessWidget {
                                        child: Text('Let\'s Start',style: TextStyle(fontSize: 25),),
                                      ),
 
-                                     Icon(Icons.arrow_circle_right_outlined,size: 40,color: Stage=='Stage1'?Lessons1[index].color:Lessons2[index].color,)
+                                     Icon(Icons.arrow_circle_right_outlined,size: 40,color: Lessons[index].color,)
                                    ],
                                  ),
                                )
