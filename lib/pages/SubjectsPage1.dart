@@ -19,27 +19,65 @@ class SubjectsPage1 extends StatefulWidget {
 
 class _SubjectsPage1State extends State<SubjectsPage1> {
   final TextEditingController _textEditingController = TextEditingController();
-
+  final controller=ScrollController();
+   double isTapPosition=0.0;
   final DatabaseService _databaseService = DatabaseService();
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.addListener(ScrollPosition);
+  }
+  void ScrollPosition(){
+    final  isTap=controller.position.pixels;
+    setState(() {
+      isTapPosition=isTap;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+
+    void ScrollDown(){
+     final double goDown=controller.position.maxScrollExtent;
+     controller.animateTo(goDown, duration: Duration(seconds: 2), curve: Curves.easeInCirc);
+    }
+    void ScrollUp(){
+      final double goUp=0;
+      controller.animateTo(goUp, duration: Duration(seconds: 2), curve: Curves.easeInCirc);
+    }
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: _appBar(),
       body: _buildUI(),
+      floatingActionButton: FloatingActionButton(
+        onPressed:isTapPosition==0.0?ScrollDown:ScrollUp,
+        child:isTapPosition==0.0?Icon(Icons.arrow_downward,size: 40,color: Colors.black,):Icon(Icons.arrow_upward,size: 40,color: Colors.blue,),
+      ),
 
     );
+
   }
 
   PreferredSizeWidget _appBar() {
     return AppBar(
       backgroundColor: Colors.amber,
-      title: Center(child: Text('${widget.stage}')),
+      title: Center(child: Text('${StageName()}')),
 
     );
   }
-
+  String StageName(){
+    if(widget.stage=='Stage2')
+    {
+      return 'مرحلة الثانية';
+    }
+    else if(widget.stage=='Stage1')
+    {
+      return 'مرحلة الاولى';
+    }
+    else return 'null';
+  }
   Widget _buildUI() {
     return SafeArea(
         child: SingleChildScrollView(
@@ -49,6 +87,7 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
             ],
           ),
         ));
+
   }
 
   Widget _messagesListView() {
@@ -71,6 +110,7 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
             );
           }
           return ListView.builder(
+            controller: controller,
             itemCount: todos.length,
             itemBuilder: (context, index) {
               Todo todo = todos[index].data();
@@ -96,11 +136,14 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text('${todo.subject}', style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ), textAlign: TextAlign.center,),
+                        SizedBox(
+                          height: 110,
+                          child: Text('${todo.subject}', style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ), textAlign: TextAlign.center,),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -128,7 +171,9 @@ class _SubjectsPage1State extends State<SubjectsPage1> {
                             SizedBox(
                               width: 20,
                             ),
-                            Container(
+                            todo.video == '' ? SizedBox(
+                              width: 0,
+                            ) :Container(
                                 height: 50,
                                 width: 150,
                                 color: Colors.lightGreenAccent,

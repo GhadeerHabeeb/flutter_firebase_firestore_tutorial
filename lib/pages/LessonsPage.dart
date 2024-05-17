@@ -1,6 +1,8 @@
 
 
 
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_firestore_tutorial/lesson_category/LessonCategory.dart';
 import 'package:flutter_firebase_firestore_tutorial/pages/SubjectsPage1.dart';
@@ -8,7 +10,8 @@ import 'package:flutter_firebase_firestore_tutorial/services/database_service.da
 import 'package:flutter_firebase_firestore_tutorial/widget/ScrollLoopAuto.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 class LessonScreen extends StatelessWidget {
      String? Stage;
      List Lessons=[];
@@ -19,13 +22,65 @@ class LessonScreen extends StatelessWidget {
      String? name;
      Color?color;
 
+
   @override
   Widget build(BuildContext context) {
+    String StageName(){
+      if( Stage=='Stage2')
+      {
+        return 'مرحلة الثانية';
+      }
+      else if(Stage=='Stage1')
+      {
+        return 'مرحلة الاولى';
+      }
+      else return 'null';
+    }
+    void sendWhatsAppMessage({
+      required String phone,
+      required String message,
+    }) async {
+      String url() {
+        if (Platform.isIOS) {
+          return "whatsapp://wa.me/$phone/?text=${Uri.parse(message)}";
+        } else {
+          return "whatsapp://send?phone=$phone&text=$message";
+        }
+      }
+
+      await canLaunch(url())
+          ? launch(url())
+          : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('There is no WhatsApp on your Device!')));
+    }
+    Future<void> _launchUrl({required String phone,required String message}) async {
+
+      final Uri url;
+      if (Platform.isIOS) {
+        url = Uri.parse('whatsapp://wa.me/$phone/?text=${Uri.parse(message)}');
+      } else {
+        url = Uri.parse('whatsapp://send?phone=$phone&text=$message');
+      }
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }}
     return  Scaffold(
       appBar: AppBar(
         backgroundColor:Colors.amber,
 
-      title: Center(child: Text('${Stage}')),),
+      title: Center(child: Text('${StageName()}')),
+     actions: [
+       Padding(
+         padding: const EdgeInsets.all(8.0),
+         child: InkWell(
+           onTap: (){
+             _launchUrl(phone: '+9647714517466',message: 'مرحبا بكم في منجزون ');
+           },
+             child: Image.asset('assets/images/whatsapp.png',)),
+       ),
+     ],
+      ),
       body:  SingleChildScrollView(
         child: Column(
           children:[
@@ -40,6 +95,7 @@ class LessonScreen extends StatelessWidget {
                 padding: EdgeInsets.all(12.0),
                 child: Center(
                   child: GridView.builder(
+
                     itemCount: Lessons.length ,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
