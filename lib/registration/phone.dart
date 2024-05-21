@@ -1,8 +1,13 @@
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:country_calling_code_picker/picker.dart';
+import 'package:flutter_firebase_firestore_tutorial/pages/internetConnected.dart';
 import 'package:flutter_firebase_firestore_tutorial/registration/verify.dart';
+import 'package:get/get.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 class MyPhone extends StatefulWidget {
     MyPhone({Key? key}) : super(key: key);
  static String VerifyId="";
@@ -26,111 +31,132 @@ class _MyPhoneState extends State<MyPhone> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(left: 25, right: 25),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child:showLoading?CircularProgressIndicator(): Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 300,
-                  height: 300,
+    return StreamBuilder<ConnectivityResult>(
+      stream: Connectivity().onConnectivityChanged,
+        builder: (context, AsyncSnapshot<ConnectivityResult> snapshot) {
+        return Scaffold(
+        body: Container(
+          margin: EdgeInsets.only(left: 25, right: 25),
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            child:showLoading?CircularProgressIndicator(): Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 300,
+                    height: 300,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
+                SizedBox(
+                  height: 25,
+                ),
 
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "! يرجى ادخال الرقم الخاص بك ",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Tajawal'
+                SizedBox(
+                  height: 10,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: 40,
-                      child: TextField(
-                        controller: countryController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                Text(
+                  "! يرجى ادخال الرقم الخاص بك ",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontFamily: 'Tajawal'
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: TextField(
+                          controller: countryController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      "|",
-                      style: TextStyle(fontSize: 33, color: Colors.grey),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: TextField(
-
-                          onChanged: (value){
-                           setState(() {
-                             phone=value;
-                           });
-                          },
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Phone",
+                      Text(
+                        "|",
+                        style: TextStyle(fontSize: 33, color: Colors.grey),
                       ),
-                    ))
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.amber,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: ()  {
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: TextField(
 
-                          _phoneAuth();
-                    },
-                    child: Text("إرسال",style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black,
-                      fontFamily:'Tajawal',
-                    ),)),
-              )
-            ],
+                            onChanged: (value){
+                              setState(() {
+                                phone=value;
+                              });
+                            },
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Phone",
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.amber,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: ()  {
+                        if(snapshot.data==ConnectivityResult.none)
+                          {
+                            showTopSnackBar(
+                              Overlay.of(context),
+                              CustomSnackBar.info(
+                                message:
+                                "There is no Internet Connection",
+                              ),
+                            );
+                          }
+                        else{
+                          phone.isEmpty?_displayTextInputDialog(context):_phoneAuth();
+                            }
+
+
+                      },
+                      child: Text("إرسال",style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.black,
+                        fontFamily:'Tajawal',
+                      ),)),
+                ),
+
+              ],
+            ),
           ),
         ),
-      ),
+
+      );
+    },
     );
   }
+
   _phoneAuth()
   async {
     try{
@@ -145,7 +171,10 @@ class _MyPhoneState extends State<MyPhone> {
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
-            _displayTextInputDialog(context);
+
+
+
+
           };
         },
         codeSent: (String verificationId, int? resendToken) {
@@ -163,6 +192,13 @@ class _MyPhoneState extends State<MyPhone> {
 
   }
 }
+
+
+
+
+
+
+
 
 void _displayTextInputDialog(BuildContext context) async {
   return showDialog(
@@ -197,4 +233,9 @@ void _displayTextInputDialog(BuildContext context) async {
       );
     },
   );
+
 }
+
+
+
+

@@ -104,8 +104,8 @@ class _VideoState extends State<Video> {
           // ),
 
           RemainingDuration(),
-          // const PlaybackSpeedButton(),
-          // FullScreenButton(),
+          const PlaybackSpeedButton(),
+          FullScreenButton(),
         ],
         onReady: () {
           _isPlayerReady = true;

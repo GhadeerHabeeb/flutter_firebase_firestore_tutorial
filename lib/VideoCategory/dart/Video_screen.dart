@@ -34,51 +34,16 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title:Center(child: Text('${widget.title}')),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Container(
-                height: 90,
-                width: MediaQuery.of(context).size.width,
 
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
-                ),
-
-                child:Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        radius: 30.0,
-                        child: Center(
-                          child: IconButton(
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-
-                            icon: Icon(Icons.arrow_back_ios,size: 30,color: Colors.grey,),
-                          ),
-                        ),
-                      ),
-                          SizedBox(
-                              width: 220,
-                              height: 50,
-                              child: Center(child: Text('${widget.title}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
-                      SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Icon(Icons.menu,size: 30,color: Colors.grey,),
-                      )
-                    ],
-                  ),
-                ),
-              ),
               YoutubePlayer(
                 controller: _controller!,
               ),
